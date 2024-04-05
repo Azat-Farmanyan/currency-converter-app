@@ -1,0 +1,62 @@
+import { CommonModule } from '@angular/common';
+import { Component, type OnInit, inject, OnDestroy } from '@angular/core';
+import { ExchangeRateService } from '../../../services/exchangeRate.service';
+import { ConverterService } from '../../../services/converter.service';
+import { Subscription, forkJoin } from 'rxjs';
+import { Currency } from '../../../models/models';
+
+@Component({
+  selector: 'app-exchange-rate',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './exchange-rate.component.html',
+  styleUrl: './exchange-rate.component.scss',
+})
+export class ExchangeRateComponent implements OnInit, OnDestroy {
+  exchangeRateService = inject(ExchangeRateService);
+  converterService = inject(ConverterService);
+
+  amountSubs: Subscription;
+  convertedAmountSubs: Subscription;
+
+  amount: Currency;
+  convertedAmount: Currency;
+  exchangeRate: number;
+
+  ngOnInit(): void {
+    this.getAmount();
+    this.getConvertedAmount();
+  }
+
+  getAmount() {
+    this.amountSubs = this.converterService.amount$.subscribe((res) => {
+      this.amount = res;
+      this.callExchangeRateService();
+    });
+  }
+  getConvertedAmount() {
+    this.convertedAmountSubs = this.converterService.convertedAmount$.subscribe(
+      (res) => {
+        this.convertedAmount = res;
+        this.callExchangeRateService();
+      }
+    );
+  }
+
+  callExchangeRateService() {
+    if (this.amount && this.convertedAmount) {
+      this.exchangeRateService
+        .getExchangeRate(this.convertedAmount.code, this.amount.code)
+        .subscribe((res) => {
+          console.log(this.amount?.code, this.convertedAmount?.code);
+          console.log(res);
+          this.exchangeRate = res;
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.amountSubs) this.amountSubs.unsubscribe();
+    if (this.convertedAmountSubs) this.convertedAmountSubs.unsubscribe();
+  }
+}

@@ -1,0 +1,9 @@
+<div class="exchange-rate-block">
+    <h3 class="exchange-rate-title roboto-regular">Indicative Exchange Rate</h3>
+    @if (amount && convertedAmount) {
+    <p class="exchange-rate-value roboto-medium">1 {{amount.code}} = {{exchangeRate}} {{convertedAmount!.code}}</p>
+    }@else{
+    <p>Loading ...</p>
+    }
+
+</div>

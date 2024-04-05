@@ -1,1 +1,104 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("./null.scss");
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.content {
+    margin: 0 auto;
+    max-width: 600px;
+    width: 100%;
+}
+
+.wrapper {
+    margin: 0 20px;
+}
+
+.horizontal-line {
+    border: 1px solid #e7e7ee;
+    width: 100%;
+    border-radius: 2px;
+    height: 0px;
+}
+
+.vertical-line {
+    // border: 1px solid #e7e7ee;
+    background-color: #e7e7ee;
+    width: 1px;
+    border-radius: 2px;
+    min-height: 100%;
+}
+
+// scrollbar style
+
+.custom-scrollable-div {
+    // height: 300px; /* Set the desired height for your div */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    // border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
+    scrollbar-width: thin;
+    /* Enable custom scrollbar for Firefox */
+    scrollbar-color: #1f2261 #ddd;
+    /* Change scrollbar track and thumb colors for Firefox */
+}
+
+/* Custom scrollbar for WebKit-based browsers (Chrome, Safari) */
+.custom-scrollable-div::-webkit-scrollbar {
+    width: 10px;
+    /* Set the width of the scrollbar */
+}
+
+.custom-scrollable-div::-webkit-scrollbar-thumb {
+    background-color: #1f2261;
+    /* Set the color of the scrollbar thumb */
+    border-radius: 5px;
+    /* Set the border radius of the thumb */
+}
+
+.custom-scrollable-div::-webkit-scrollbar-track {
+    background-color: #ddd;
+    /* Set the color of the scrollbar track */
+    border-radius: 10px;
+}
+
+// hide input type number arrows
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

@@ -1,0 +1,28 @@
+.home {
+    // background-color: #EAEAFE;
+    height: 100%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(234, 234, 254, 0.5) 0%, rgba(221, 246, 243, 0.5) 100%);
+
+    .home-body {
+
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 30px;
+
+        .title {
+            font-size: 25px;
+            text-align: center;
+            color: #1f2261;
+            padding: 60px 0 30px;
+            max-width: 165px;
+            margin: 0 auto;
+        }
+
+        app-converter-widget,
+        app-exchange-rate {
+            width: 100%;
+        }
+    }
+
+}
