@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Currency, CurrencyList, CurrencyListItem } from '../models/models';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, Subject, debounceTime, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,7 @@ export class ConverterService {
 
   // Subject для значения основной валюты
   amount$ = new Subject<Currency>();
+  swapCurrencies$ = new Subject<boolean>();
 
   // Subject для значения конвертированной валюты
   convertedAmount$ = new Subject<Currency>();

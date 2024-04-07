@@ -26,9 +26,13 @@ export class ConverterWidgetComponent implements OnInit, OnDestroy {
   amount: Currency;
   convertedAmount: Currency;
 
+  swapToggle: boolean = false;
+
   // Вызывается при инициализации компонента
   ngOnInit(): void {
     this.fetchCurrencyList();
+    this.getAmount();
+    this.getConvertedAmount();
   }
 
   // Запрос списка валют
@@ -41,9 +45,9 @@ export class ConverterWidgetComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Установка валют по умолчанию (RUB и USD)
+  // Установка валют
   setCurrency(
-    res: Currency[],
+    res: Currency[], // список валют
     amountCurrencyCode: string,
     convertedAmountCode: string
   ) {
@@ -55,6 +59,24 @@ export class ConverterWidgetComponent implements OnInit, OnDestroy {
       this.converterService.convertedAmount$.next(convertedAmount);
   }
 
+  swapCurrencies() {
+    this.swapToggle = !this.swapToggle;
+    this.converterService.swapCurrencies$.next(this.swapToggle);
+  }
+
+  getAmount() {
+    this.amountSubs = this.converterService.amount$.subscribe((res) => {
+      this.amount = res;
+    });
+  }
+  getConvertedAmount() {
+    this.convertedAmountSubs = this.converterService.convertedAmount$.subscribe(
+      (res) => {
+        this.convertedAmount = res;
+      }
+    );
+  }
+
   searchInCurrencyList(currencyList: Currency[], currencyCode: string) {
     return currencyList.find((el) => el.code === currencyCode);
   }
@@ -62,5 +84,7 @@ export class ConverterWidgetComponent implements OnInit, OnDestroy {
   // Вызывается при уничтожении компонента
   ngOnDestroy(): void {
     if (this.currencyListSubs) this.currencyListSubs.unsubscribe();
+    if (this.amountSubs) this.amountSubs.unsubscribe();
+    if (this.convertedAmountSubs) this.convertedAmountSubs.unsubscribe();
   }
 }

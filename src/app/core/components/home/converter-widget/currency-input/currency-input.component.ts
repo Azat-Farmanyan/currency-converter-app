@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { Currency } from '../../../../models/models';
 import { ConverterService } from '../../../../services/converter.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, tap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ExchangeRateService } from '../../../../services/exchangeRate.service';
 
@@ -35,6 +35,8 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
   })
   currencyList: Currency[]; // Список валют для выбора
 
+  loading: boolean = false;
+
   // Переменная для отображения/скрытия выпадающего списка выбора валюты
   listIsOpen: boolean = false;
 
@@ -43,6 +45,7 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
   convertedAmountSubs: Subscription;
   currencyFromSubs: Subscription;
   exchangeRateSubs: Subscription;
+  swapCurrenciesSubs: Subscription;
 
   // Активная выбранная валюта
   activeCurrency: Currency;
@@ -80,6 +83,8 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
 
     // Получаем текущую выбранную валюту
     this.getCurrencyFrom();
+
+    this.swapCurrencies();
   }
 
   // Устанавливаем введенное значение в поле ввода
@@ -170,6 +175,7 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
   setAmount(currency: Currency) {
     if (this.label === 'Amount') {
       if (currency.code === this.convertedAmount.code) {
+        //  Если совпадают, меняем местами валюты
         this.converterService.convertedAmount$.next(this.amount);
         this.converterService.amount$.next(currency);
       } else {
@@ -177,6 +183,7 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
       }
     } else if (this.label === 'Converted Amount') {
       if (currency.code === this.amount.code) {
+        //  Если совпадают, меняем местами валюты
         this.converterService.amount$.next(this.convertedAmount);
         this.converterService.convertedAmount$.next(currency);
       } else {
@@ -187,11 +194,21 @@ export class CurrencyInputComponent implements OnInit, OnDestroy {
     this.listIsOpen = false; // Закрываем список выбора валюты после выбора
   }
 
+  swapCurrencies() {
+    this.swapCurrenciesSubs = this.converterService.swapCurrencies$.subscribe(
+      () => {
+        this.setAmount(this.convertedAmount);
+        this.loading = false;
+      }
+    );
+  }
+
   // Отписываемся от всех подписок при уничтожении компонента
   ngOnDestroy(): void {
     if (this.amountSubs) this.amountSubs.unsubscribe();
     if (this.convertedAmountSubs) this.convertedAmountSubs.unsubscribe();
     if (this.currencyFromSubs) this.currencyFromSubs.unsubscribe();
     if (this.exchangeRateSubs) this.exchangeRateSubs.unsubscribe();
+    if (this.swapCurrenciesSubs) this.swapCurrenciesSubs.unsubscribe();
   }
 }

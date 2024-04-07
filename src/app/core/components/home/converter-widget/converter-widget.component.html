@@ -2,10 +2,10 @@
     <app-currency-input label="Amount" [currencyList]="currencyList" />
     <div class="convert-btn-block">
         <div class="horizontal-line"></div>
-        <!-- <button class="convert-btn">
+        <button class="convert-btn" (click)="swapCurrencies()">
             <img src="../../../../../assets/icons/convert-icon.svg" alt="convert-icon">
         </button>
-        <div class="horizontal-line"></div> -->
+        <div class="horizontal-line"></div>
     </div>
     <app-currency-input label="Converted Amount" [currencyList]="currencyList" />
 </div>

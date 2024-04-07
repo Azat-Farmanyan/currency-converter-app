@@ -34,7 +34,7 @@ export class ExchangeRateService {
       .pipe(
         // Извлечение значений обменного курса из ответа
         map((res) => Object.values(res.data)),
-        debounceTime(2000),
+        // debounceTime(2000),
         // Отправка обновленного обменного курса через Subject
         tap((res) => this.exchangeRate.next(res))
       );
