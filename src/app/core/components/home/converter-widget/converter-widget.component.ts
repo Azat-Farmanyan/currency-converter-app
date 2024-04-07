@@ -14,17 +14,22 @@ import { ConverterService } from '../../../services/converter.service';
   styleUrl: './converter-widget.component.scss',
 })
 export class ConverterWidgetComponent implements OnInit, OnDestroy {
+  // Получение сервисов CurrencyListService и ConverterService с помощью inject
+  currencyListService = inject(CurrencyListService);
+  converterService = inject(ConverterService);
+
   currencyList: Currency[] = [];
   currencyListSubs: Subscription;
+  amountSubs: Subscription;
+  convertedAmountSubs: Subscription;
+
+  amount: Currency;
+  convertedAmount: Currency;
 
   // Вызывается при инициализации компонента
   ngOnInit(): void {
     this.fetchCurrencyList();
   }
-
-  // Получение сервисов CurrencyListService и ConverterService с помощью inject
-  currencyListService = inject(CurrencyListService);
-  converterService = inject(ConverterService);
 
   // Запрос списка валют
   fetchCurrencyList() {
@@ -32,18 +37,26 @@ export class ConverterWidgetComponent implements OnInit, OnDestroy {
       this.currencyList = res;
 
       // Установка валют по умолчанию
-      this.setDefaultCurrency(res);
+      this.setCurrency(res, 'RUB', 'USD');
     });
   }
 
   // Установка валют по умолчанию (RUB и USD)
-  setDefaultCurrency(res: Currency[]) {
-    const amountCurrency = res.find((el) => el.code === 'RUB');
+  setCurrency(
+    res: Currency[],
+    amountCurrencyCode: string,
+    convertedAmountCode: string
+  ) {
+    const amountCurrency = this.searchInCurrencyList(res, amountCurrencyCode);
     if (amountCurrency) this.converterService.amount$.next(amountCurrency);
 
-    const convertedAmount = res.find((el) => el.code === 'USD');
+    const convertedAmount = this.searchInCurrencyList(res, convertedAmountCode);
     if (convertedAmount)
       this.converterService.convertedAmount$.next(convertedAmount);
+  }
+
+  searchInCurrencyList(currencyList: Currency[], currencyCode: string) {
+    return currencyList.find((el) => el.code === currencyCode);
   }
 
   // Вызывается при уничтожении компонента
