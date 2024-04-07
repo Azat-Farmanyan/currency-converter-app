@@ -44,7 +44,7 @@
 
 
         .currency-input {
-            font-size: 20px;
+            font-size: 34px;
             text-align: right;
             color: #3c3c3c;
 
@@ -53,6 +53,10 @@
             padding: 11px 14px;
 
             width: 100%;
+
+            @media only screen and (max-width: 1000px) {
+                font-size: 24px;
+            }
         }
 
         .currency-symbol {

@@ -8,12 +8,15 @@ import { CurrencyListItem, CurrencyList, Currency } from '../models/models';
   providedIn: 'root',
 })
 export class CurrencyListService {
+  // Инициализация HttpClient
   http = inject(HttpClient);
 
+  // URL для получения списка валют
   private currencyListUrl = environment.currencyListUrl;
 
   constructor() {}
 
+  // Получение списка валют
   getCurrencyList(): Observable<Currency[]> {
     return this.http
       .get<CurrencyList>(this.currencyListUrl)

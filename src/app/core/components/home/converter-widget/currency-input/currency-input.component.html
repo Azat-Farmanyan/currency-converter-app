@@ -8,16 +8,19 @@
         'rotate-close':!listIsOpen}" src="../../../../../assets/icons/arrow-icon.svg" alt="arrow">
         </button>
 
-        <input placeholder="Enter amount" class="currency-input roboto-medium" id="currency" type="number">
+        <input [disabled]="label==='Converted Amount'" (input)="setInputValue()" [(ngModel)]="inputValue"
+            placeholder="0" class="currency-input roboto-medium" id="currency" type="number">
 
         <p class="currency-symbol roboto-medium">{{activeCurrency.symbol}}</p>
+        }@else{
+        <p>Loading ...</p>
         }
     </div>
     @if (listIsOpen) {
     <div class="currency-list custom-scrollable-div">
         @for (currencyListItem of currencyList; track currencyListItem) {
         <div (click)="setAmount(currencyListItem)" class="currency-list-item"
-            [ngClass]="{'active-list-item':currencyListItem.code===activeCurrency.code}">
+            [ngClass]="{'active-list-item':currencyListItem!.code===activeCurrency!.code}">
             <p class="currency-symbol roboto-medium"> {{currencyListItem.code}}</p>
             <p>-</p>
             <p class="currency-name roboto-regular">{{currencyListItem.name_plural}}</p>

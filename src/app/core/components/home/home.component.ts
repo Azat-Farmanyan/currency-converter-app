@@ -10,6 +10,4 @@ import { ExchangeRateComponent } from './exchange-rate/exchange-rate.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
-  ngOnInit(): void {}
-}
+export class HomeComponent {}
